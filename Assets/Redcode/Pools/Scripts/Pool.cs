@@ -3,13 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
+/// <summary>
+/// Helper class to create generic pools.
+/// </summary>
 public static class Pool
 {
+    /// <summary>
+    /// Create pool.
+    /// </summary>
+    /// <typeparam name="T">Pool type.</typeparam>
+    /// <param name="source">Pool object source.</param>
+    /// <param name="count">Maximum objects count in pool.</param>
+    /// <returns></returns>
     public static Pool<T> Create<T>(T source, int count) where T : Component => Create(source, count, null);
 
-    public static Pool<T> Create<T>(T source, int count, Transform parent) where T : Component => Create(source, count, null, null);
+    /// <summary>
+    /// <inheritdoc cref="Create{T}(T, int)"/>
+    /// </summary>
+    /// <typeparam name="T"><inheritdoc cref="Create{T}(T, int)"/></typeparam>
+    /// <param name="source"><inheritdoc cref="Create{T}(T, int)" path="/param[@name='source']"/></param>
+    /// <param name="count"><inheritdoc cref="Create{T}(T, int)" path="/param[@name='count']"/></param>
+    /// <param name="container">Container object for pool objects.</param>
+    /// <returns></returns>
+    public static Pool<T> Create<T>(T source, int count, Transform container) where T : Component => Create(source, count, container, null);
 
-    public static Pool<T> Create<T>(T source, int count, Transform parent, Action<T> resetter) where T : Component => Pool<T>.Create(source, count, parent, resetter);
+    /// <summary>
+    /// <inheritdoc cref="Create{T}(T, int)"/>
+    /// </summary>
+    /// <typeparam name="T"><inheritdoc cref="Create{T}(T, int)"/></typeparam>
+    /// <param name="source"><inheritdoc cref="Create{T}(T, int)" path="/param[@name='source']"/></param>
+    /// <param name="count"><inheritdoc cref="Create{T}(T, int)" path="/param[@name='count']"/></param>
+    /// <param name="container"><inheritdoc cref="Create{T}(T, int, Transform)" path="/param[@name='container']"/></param>
+    /// <param name="resetter">Reset function, which will be called before pool objects will be given to the client</param>
+    /// <returns></returns>
+    public static Pool<T> Create<T>(T source, int count, Transform container, Action<T> resetter) where T : Component => Pool<T>.Create(source, count, container, resetter);
 }
 
 public class Pool<T> where T : Component
@@ -19,10 +46,16 @@ public class Pool<T> where T : Component
 
     private int _count;
 
+    /// <summary>
+    /// Maximum objects in pool.
+    /// </summary>
     public int Count => _count;
 
     private Transform _container;
 
+    /// <summary>
+    /// Container for pool objects.
+    /// </summary>
     public Transform Container => _container;
 
     private List<T> _clones;
@@ -48,6 +81,15 @@ public class Pool<T> where T : Component
         return pool;
     }
 
+    /// <summary>
+    /// Sets new maximum count for pool objects.
+    /// </summary>
+    /// <param name="count">Maximum objects count.</param>
+    /// <param name="destroyClones">
+    /// Do we need destroy already exists pool objects, or keep they live?<br/>
+    /// These objects will no longer be controlled by the pool.
+    /// </param>
+    /// <returns>The pool.</returns>
     public Pool<T> SetCount(int count, bool destroyClones = true)
     {
         count = Math.Max(count, 0);
@@ -77,6 +119,12 @@ public class Pool<T> where T : Component
         return this;
     }
 
+    /// <summary>
+    /// Sets new container for pool objects. Already exists pool objects will be reparented.
+    /// </summary>
+    /// <param name="container">New container for pool objects.</param>
+    /// <param name="worldPositionStays">Do we need save pool objects world position?</param>
+    /// <returns>The pool.</returns>
     public Pool<T> SetContainer(Transform container, bool worldPositionStays = true)
     {
         _container = container;
@@ -85,12 +133,24 @@ public class Pool<T> where T : Component
         return this;
     }
 
+    /// <summary>
+    /// Sets new reset function, which will be called before pool objects will be given to the client.
+    /// <param name="resetter">New reset function.</param>
+    /// <returns>The pool.</returns>
     public Pool<T> SetResetter(Action<T> resetter)
     {
         _resetter = resetter;
         return this;
     }
 
+    /// <summary>
+    /// Clears all pool objects.
+    /// </summary>
+    /// <param name="destroyClones">
+    /// Do we need destroy already exists pool objects, or keep they live?<br/>
+    /// These objects will no longer be controlled by the pool.
+    /// </param>
+    /// <returns></returns>
     public Pool<T> Clear(bool destroyClones = true)
     {
         if (destroyClones)
@@ -101,6 +161,10 @@ public class Pool<T> where T : Component
         return this;
     }
 
+    /// <summary>
+    /// Immediately create all pool objects. Not works when <b>Count</b> is <b>0</b>./>
+    /// </summary>
+    /// <returns>The pool.</returns>
     public Pool<T> NonLazy()
     {
         while (_clones.Count < _count)
@@ -114,6 +178,11 @@ public class Pool<T> where T : Component
         return this;
     }
 
+    /// <summary>
+    /// Try get object from pool. If all objects are busy, then <see langword="null"/> will be returned.<br/>
+    /// You need to remember to call <see cref="Take"/> method to return the object to the pool.
+    /// </summary>
+    /// <returns>Object from pool.</returns>
     public T Get()
     {
         T clone = null;
@@ -143,6 +212,11 @@ public class Pool<T> where T : Component
         return clone;
     }
 
+    /// <summary>
+    /// Marks object as free after it was busy with calling <see cref="Get"/> method.
+    /// </summary>
+    /// <param name="clone">Pool object to mark as free.</param>
+    /// <exception cref="ArgumentException">Throwed when <paramref name="clone"/> not exist on pool, or not busy.</exception>
     public void Take(T clone)
     {
         if (!_clones.Contains(clone))
