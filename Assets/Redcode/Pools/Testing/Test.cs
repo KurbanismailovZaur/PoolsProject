@@ -13,12 +13,9 @@ public class Test : MonoBehaviour
 
     private IEnumerator Start()
     {
-        var poolEnemy = _manager.GetPool<Enemy>("Enemies");
-        var enemy = poolEnemy.Get();
+        var enemy = _manager.GetFromPool<Enemy>(0);
 
-        yield return new WaitForSeconds(3f);
-
-        poolEnemy.Take(enemy);
-        print("Completed");
+        yield return new WaitForSeconds(2f);
+        _manager.TakeToPool(0, enemy);
     }
 }
