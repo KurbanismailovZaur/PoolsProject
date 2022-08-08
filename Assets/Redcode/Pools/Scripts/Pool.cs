@@ -34,7 +34,7 @@ namespace Redcode.Pools
     /// Represent <typeparamref name="T"/>'s pool.
     /// </summary>
     /// <typeparam name="T">Pool object's type.</typeparam>
-    public class Pool<T> : IPool where T : Component
+    public class Pool<T> : IPool<T> where T : Component
     {
         #region Fields and properties
         private T _source;
@@ -61,13 +61,13 @@ namespace Redcode.Pools
 
         private Pool() { }
 
-        internal static Pool<T> Create(T source, int count, Transform parent)
+        internal static Pool<T> Create(T source, int count, Transform container)
         {
             var pool = new Pool<T>
             {
                 _source = source,
                 _count = Math.Max(count, 0),
-                _container = parent,
+                _container = container,
                 _clones = new(count)
             };
 
@@ -75,7 +75,10 @@ namespace Redcode.Pools
             return pool;
         }
 
+        #region SetCount
         IPool IPool.SetCount(int count, bool destroyClones) => SetCount(count, destroyClones);
+
+        IPool<T> IPool<T>.SetCount(int count, bool destroyClones) => SetCount(count, destroyClones);
 
         /// <summary>
         /// <inheritdoc cref="IPool.SetCount(int, bool)"/>
@@ -111,8 +114,12 @@ namespace Redcode.Pools
 
             return this;
         }
+        #endregion
 
+        #region SetContainer
         IPool IPool.SetContainer(Transform container, bool worldPositionStays) => SetContainer(container, worldPositionStays);
+
+        IPool<T> IPool<T>.SetContainer(Transform container, bool worldPositionStays) => SetContainer(container, worldPositionStays);
 
         /// <summary>
         /// <inheritdoc cref="IPool.SetContainer(Transform, bool)"/>
@@ -127,8 +134,12 @@ namespace Redcode.Pools
 
             return this;
         }
+        #endregion
 
+        #region Clear
         IPool IPool.Clear(bool destroyClones) => Clear(destroyClones);
+
+        IPool<T> IPool<T>.Clear(bool destroyClones) => Clear(destroyClones);
 
         /// <summary>
         /// <inheritdoc cref="IPool.Clear(bool)"/>
@@ -152,8 +163,12 @@ namespace Redcode.Pools
 
             return this;
         }
+        #endregion
 
+        #region NonLazy
         IPool IPool.NonLazy() => NonLazy();
+
+        IPool<T> IPool<T>.NonLazy() => NonLazy();
 
         /// <summary>
         /// <inheritdoc cref="IPool.NonLazy()"/>
@@ -171,7 +186,9 @@ namespace Redcode.Pools
 
             return this;
         }
+        #endregion
 
+        #region Get
         Component IPool.Get() => Get();
 
         /// <summary>
@@ -203,12 +220,14 @@ namespace Redcode.Pools
             _busyObjects.Add(clone);
 
             clone.gameObject.SetActive(true);
-            if (clone is IResetablePoolObject resetable)
-                resetable.ResetState();
+            if (clone is IPoolObject resetable)
+                resetable.OnGettingFromPool();
 
             return clone;
         }
+        #endregion
 
+        #region Take
         void IPool.Take(Component clone) => Take((T)clone);
 
         /// <summary>
@@ -219,14 +238,15 @@ namespace Redcode.Pools
         public void Take(T clone)
         {
             if (!_clones.Contains(clone))
-                throw new ArgumentException("Passed clone object does not exist in pool's clones list.");
+                throw new ArgumentException("Passed object does not exist in pool's clones list.");
 
             if (!_busyObjects.Contains(clone))
-                throw new ArgumentException("Passed clone object already free.");
+                throw new ArgumentException("Passed object already free.");
 
             _busyObjects.Remove(clone);
             clone.gameObject.SetActive(false);
         }
+        #endregion
 
         public CustomYieldInstruction WaitForFreeObject() => new WaitWhile(() => _busyObjects.Count == _clones.Count);
     }

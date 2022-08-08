@@ -78,7 +78,7 @@ namespace Redcode.Pools
         CustomYieldInstruction WaitForFreeObject();
     }
 
-    public interface IPool<T> : IPool where T : Component
+    public interface IPool<out T> : IPool where T : Component
     {
         /// <summary>
         /// Source of the pool, which will be used for instantiate new clones.
@@ -120,12 +120,5 @@ namespace Redcode.Pools
         /// </summary>
         /// <returns>Object (its <b><typeparamref name="T"/></b> component) from pool.</returns>
         new T Get();
-
-        /// <summary>
-        /// Marks object as free (after it was busy with calling <see cref="Get"/> method).
-        /// </summary>
-        /// <param name="clone"><inheritdoc cref="IPool.Take(Component)" path="/param[@name='clone']"/></param>
-        /// <exception cref="ArgumentException"></exception>
-        void Take(T clone);
     }
 }

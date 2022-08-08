@@ -146,13 +146,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 114733805}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_Father: {fileID: 1076390754}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &330585543
 GameObject:
@@ -459,13 +459,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1056866142}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_Father: {fileID: 1076390754}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1060172898
 GameObject:
@@ -540,9 +540,11 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 114733806}
+  - {fileID: 1056866143}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1076390755
 MonoBehaviour:
@@ -556,14 +558,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 733f4e1ff483611408f4a8d4fc9202ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _poolsData:
-  - _component: {fileID: 2976305581285042068, guid: 4adf8df7ea620204690e6702be988e31,
+  _pools:
+  - _name: Enemies
+    _component: {fileID: 3083908634035220727, guid: 359e6030e6a626447982f5e8000b52c0,
       type: 3}
-    _count: 5
-    _container: {fileID: 1056866143}
-    _nonLazy: 1
-  - _component: {fileID: 3083908634035220727, guid: 359e6030e6a626447982f5e8000b52c0,
-      type: 3}
-    _count: 10
+    _count: 0
     _container: {fileID: 114733806}
     _nonLazy: 0
+  - _name: Bullets
+    _component: {fileID: 2976305581285042068, guid: 4adf8df7ea620204690e6702be988e31,
+      type: 3}
+    _count: 8
+    _container: {fileID: 1056866143}
+    _nonLazy: 1
