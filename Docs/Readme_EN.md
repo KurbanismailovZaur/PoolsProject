@@ -1,4 +1,4 @@
-#Pools
+# Pools
 Pools is an asset with a couple of classes that will allow you to create and work with pools easily and simply.
 
 ### Connection
@@ -7,7 +7,7 @@ To work with a pool, include the `Redcode.Pools` namespace.
 using Redcode.Pools
 ```
 
-#Pool
+# Pool
 ### Create a pool from code
 Use the `Pool.Create<T>(T component, int count)` method to create a pool. As the first parameter, specify any component on the game object in the scene or prefab,
 in the second - the maximum number of clones that this pool should create.
