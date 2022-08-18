@@ -95,7 +95,11 @@ public class Enemy : MonoBehaviour, IPoolObject
 
 # Pool manager
 Use the pool manager in the scene to do all the customization you want on the pools and then use them in your game logic. Add PoolManager script to empty
-game object and configure it. Add a link to it in any script you need and use it to get pools or immediately objects from pools.
+game object and configure it. 
+
+![image](https://user-images.githubusercontent.com/5365111/185308746-d82cec87-34de-4644-a788-8377698d3339.png)
+
+Each pool in the manager has its own name, it can be used to find the desired pool in the manager. Add a link to the manager to any script you need and use it to get pools or immediately objects from pools, as in the examples below.
 ```C#
 varpool = manager.GetPool<Enemy>(1); // Get pool at index 1.
 var clone = manager.GetFromPool<Enemy>(1) // Request an object from the pool at index 1.
