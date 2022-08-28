@@ -231,19 +231,31 @@ namespace Redcode.Pools
         void IPool.Take(Component clone) => Take((T)clone);
 
         /// <summary>
-        /// Marks object as free (after it was busy with calling <see cref="Get"/> method).
+        /// Marks object as free. If object does not exist in pool's internal list, then it will be added (if it possible).
         /// </summary>
         /// <param name="clone"><inheritdoc cref="IPool.Take(Component)" path="/param[@name='clone']"/></param>
-        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="ArgumentException">Throwed if object already free.</exception>
+        /// <exception cref="Exception">Throwed if pool is full.</exception>
         public void Take(T clone)
         {
             if (!_clones.Contains(clone))
-                throw new ArgumentException("Passed object does not exist in pool's clones list.");
+            {
+                //throw new ArgumentException("Passed object does not exist in pool's clones list.");
 
-            if (!_busyObjects.Contains(clone))
-                throw new ArgumentException("Passed object already free.");
+                if (_count != 0 && _clones.Count >= _count)
+                    throw new Exception("Can't add clone to pool, because pool is full");
 
-            _busyObjects.Remove(clone);
+                clone.transform.SetParent(_container, true);
+                _clones.Add(clone);
+            }
+            else
+            {
+                if (!_busyObjects.Contains(clone))
+                    throw new ArgumentException("Passed object already free.");
+
+                _busyObjects.Remove(clone);
+            }
+
             clone.gameObject.SetActive(false);
         }
         #endregion

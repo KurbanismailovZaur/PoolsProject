@@ -65,10 +65,11 @@ namespace Redcode.Pools
         Component Get();
 
         /// <summary>
-        /// Marks object as free (after it was busy with calling <see cref="Get"/> method).
+        /// Marks object as free. If object does not exist in pool's internal list, then it will be added (if it possible).
         /// </summary>
-        /// <param name="clone">Pool's object to mark as free.</param>
-        /// <exception cref="ArgumentException">Throwed when <paramref name="clone"/> not exist on pool, or not busy.</exception>
+        /// <param name="clone">Pool's object to mark as free or add.</param>
+        /// <exception cref="ArgumentException">Throwed if object already free.</exception>
+        /// <exception cref="Exception">Throwed if pool is full.</exception>
         void Take(Component clone);
 
         /// <summary>

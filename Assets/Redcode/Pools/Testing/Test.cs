@@ -11,11 +11,14 @@ public class Test : MonoBehaviour
     [SerializeField]
     private PoolManager _manager;
 
+    [SerializeField]
+    private Enemy _enemyPrefab;
+
     private IEnumerator Start()
     {
-        var enemy = _manager.GetFromPool<Enemy>(0);
+        yield return new WaitForSeconds(1f);
 
-        yield return new WaitForSeconds(2f);
-        _manager.TakeToPool(0, enemy);
+        // Creates enemy pool with an endless number of clones.
+        var pool = Pool.Create(_enemyPrefab, 0);
     }
 }
