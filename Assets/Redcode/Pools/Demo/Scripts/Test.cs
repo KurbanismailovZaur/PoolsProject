@@ -24,7 +24,5 @@ public class Test : MonoBehaviour
         // Find pool of type Enemy and returns clone to it.
         // Also has other overloads.
         _poolManager.TakeToPool<Enemy>(enemy);
-
-        enemyPool.Get();
     }
 }
