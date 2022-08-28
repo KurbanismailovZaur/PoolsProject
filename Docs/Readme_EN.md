@@ -41,6 +41,8 @@ pool.Take(enemy);
 
 When an object is returned to the pool, it becomes inactive.
 
+> If the object that is returned does not exist in the pool (that is, it was not created by the pool itself), then it will be added to it and become a child object of the container (about them later) of the pool.
+
 ### Waiting for a free object
 If you want to wait for a free object in the pool, use WaitForFreeObject.
 ```C#
