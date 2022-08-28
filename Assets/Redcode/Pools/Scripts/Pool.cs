@@ -11,15 +11,6 @@ namespace Redcode.Pools
     public static class Pool
     {
         /// <summary>
-        /// Create pool.
-        /// </summary>
-        /// <typeparam name="T">Pool type.</typeparam>
-        /// <param name="source">Pool object source.</param>
-        /// <param name="count">Maximum objects count in pool.</param>
-        /// <returns></returns>
-        public static Pool<T> Create<T>(T source, int count) where T : Component => Create(source, count, null);
-
-        /// <summary>
         /// <inheritdoc cref="Create{T}(T, int)"/>
         /// </summary>
         /// <typeparam name="T"><inheritdoc cref="Create{T}(T, int)"/></typeparam>
@@ -27,7 +18,7 @@ namespace Redcode.Pools
         /// <param name="count"><inheritdoc cref="Create{T}(T, int)" path="/param[@name='count']"/></param>
         /// <param name="container">Container object for pool objects.</param>
         /// <returns></returns>
-        public static Pool<T> Create<T>(T source, int count, Transform container) where T : Component => Pool<T>.Create(source, count, container);
+        public static Pool<T> Create<T>(T source, int count = 0, Transform container = null) where T : Component => Pool<T>.Create(source, count, container);
     }
 
     /// <summary>

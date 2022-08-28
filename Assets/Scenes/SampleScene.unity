@@ -476,7 +476,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1060172900}
-  - component: {fileID: 1060172899}
   m_Layer: 0
   m_Name: Test
   m_TagString: Untagged
@@ -484,19 +483,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1060172899
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1060172898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ebf600a69430fa43ac5a2186a64d3c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _manager: {fileID: 1076390755}
 --- !u!4 &1060172900
 Transform:
   m_ObjectHideFlags: 0
@@ -571,3 +557,91 @@ MonoBehaviour:
     _count: 8
     _container: {fileID: 1056866143}
     _nonLazy: 1
+--- !u!1001 &2039337514
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5073415977172776021, guid: 359e6030e6a626447982f5e8000b52c0,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5073415977172776021, guid: 359e6030e6a626447982f5e8000b52c0,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5073415977172776021, guid: 359e6030e6a626447982f5e8000b52c0,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5073415977172776021, guid: 359e6030e6a626447982f5e8000b52c0,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5073415977172776021, guid: 359e6030e6a626447982f5e8000b52c0,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5073415977172776021, guid: 359e6030e6a626447982f5e8000b52c0,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5073415977172776021, guid: 359e6030e6a626447982f5e8000b52c0,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5073415977172776021, guid: 359e6030e6a626447982f5e8000b52c0,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5073415977172776021, guid: 359e6030e6a626447982f5e8000b52c0,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5073415977172776021, guid: 359e6030e6a626447982f5e8000b52c0,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5073415977172776021, guid: 359e6030e6a626447982f5e8000b52c0,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8612966576386106748, guid: 359e6030e6a626447982f5e8000b52c0,
+        type: 3}
+      propertyPath: m_Name
+      value: Enemy
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 3083908634035220727, guid: 359e6030e6a626447982f5e8000b52c0, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 359e6030e6a626447982f5e8000b52c0, type: 3}
+--- !u!1 &2039337515 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8612966576386106748, guid: 359e6030e6a626447982f5e8000b52c0,
+    type: 3}
+  m_PrefabInstance: {fileID: 2039337514}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2039337516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2039337515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10e051196ca2f814fa387ca6adb71a6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
