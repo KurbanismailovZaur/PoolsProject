@@ -206,6 +206,9 @@ namespace Redcode.Pools
                     return null;
 
                 _clones.Add(clone = Object.Instantiate(_source, _container));
+
+                if (clone is IPoolObject obj)
+                    obj.OnCreatedInPool();
             }
 
             _busyObjects.Add(clone);

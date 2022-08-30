@@ -9,6 +9,11 @@ namespace Redcode.Pools
     public interface IPoolObject
     {
         /// <summary>
+        /// Called by pool when object instantiated.
+        /// </summary>
+        void OnCreatedInPool();
+
+        /// <summary>
         /// Called by pool before gets you pool's object. Useful for state resetting.
         /// </summary>
         void OnGettingFromPool();
