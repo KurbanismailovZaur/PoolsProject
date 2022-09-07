@@ -152,6 +152,7 @@ namespace Redcode.Pools
         #endregion
     }
 
+#if UNITY_EDITOR
     [InitializeOnLoad]
     internal class PoolManagerInitializer
     {
@@ -167,4 +168,5 @@ namespace Redcode.Pools
                 MonoImporter.SetExecutionOrder(script, -1);
         }
     }
+#endif
 }
