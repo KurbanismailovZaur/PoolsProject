@@ -1,8 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using UnityEditor;
 using UnityEngine;
 
 namespace Redcode.Pools
@@ -54,7 +55,7 @@ namespace Redcode.Pools
 
             if (namesGroups.Count() > 0)
                 throw new Exception($"Pool Manager already contains pool with name \"{namesGroups.First().Select(g => g).First()}\"");
-            
+
             var poolsType = typeof(List<IPool<Component>>);
             var poolsAddMethod = poolsType.GetMethod("Add");
             var genericPoolType = typeof(Pool<>);
@@ -76,6 +77,7 @@ namespace Redcode.Pools
             }
         }
 
+        #region Get pool
         /// <summary>
         /// Find pool by <paramref name="index"/>.
         /// </summary>
@@ -85,26 +87,29 @@ namespace Redcode.Pools
         public IPool<T> GetPool<T>(int index) where T : Component => (IPool<T>)_poolsObjects[index];
 
         /// <summary>
+        /// Find pool by type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">Pool's objects type.</typeparam>
+        /// <returns>Finded pool.</returns>
+        public IPool<T> GetPool<T>() where T : Component => (IPool<T>)_poolsObjects.Find(p => p.Source is T);
+
+        /// <summary>
+        /// Find pool by <paramref name="name"/>
+        /// </summary>
+        /// <typeparam name="T">Pool's objects type.</typeparam>
+        /// <param name="name">Pool name.</param>
+        /// <returns>Finded pool.</returns>
+        public IPool<T> GetPool<T>(string name) where T : Component => (IPool<T>)_poolsObjects[_pools.FindIndex(p => p.Name == name)];
+        #endregion
+
+        #region Get from pool
+        /// <summary>
         /// Find pool by <paramref name="index"/> and gets object from it.
         /// </summary>
         /// <typeparam name="T"><inheritdoc cref="GetPool{T}"/></typeparam>
         /// <param name="index"><inheritdoc cref="GetPool{T}"/></param>
         /// <returns>Pool's object (or <see langword="null"/> if free object was not finded).</returns>
         public T GetFromPool<T>(int index) where T : Component => GetPool<T>(index).Get();
-
-        /// <summary>
-        /// Returns object back to pool and marks it as free.
-        /// </summary>
-        /// <param name="index"><inheritdoc cref="GetPool{T}"/></param>
-        /// <param name="component">Object (its component) which returns back.</param>
-        public void TakeToPool(int index, Component component) => _poolsObjects[index].Take(component);
-
-        /// <summary>
-        /// Find pool by type <typeparamref name="T"/>.
-        /// </summary>
-        /// <typeparam name="T">Pool's objects type.</typeparam>
-        /// <returns>Finded pool.</returns>
-        public IPool<T> GetPool<T>() where T : Component => (IPool<T>)_poolsObjects.Find(p => p.Source is T);
 
         /// <summary>
         /// Find pool by type <typeparamref name="T"/> and gets object from it.
@@ -114,27 +119,28 @@ namespace Redcode.Pools
         public T GetFromPool<T>() where T : Component => GetPool<T>().Get();
 
         /// <summary>
-        /// Returns object back to pool and marks it as free.
-        /// </summary>
-        /// <typeparam name="T">Pool type.</typeparam>
-        /// <param name="component">Object (its component) which returns back.</param>
-        public void TakeToPool<T>(Component component) where T : Component => GetPool<T>().Take(component);
-
-        /// <summary>
-        /// Find pool by <paramref name="name"/>
-        /// </summary>
-        /// <typeparam name="T">Pool's objects type.</typeparam>
-        /// <param name="name">Pool name.</param>
-        /// <returns>Finded pool.</returns>
-        public IPool<T> GetPool<T>(string name) where T : Component => (IPool<T>)_poolsObjects[_pools.FindIndex(p => p.Name == name)];
-
-        /// <summary>
         /// Find pool by name <paramref name="name"/> and gets object from it.
         /// </summary>
         /// <typeparam name="T"><inheritdoc cref="GetPool{T}"/></typeparam>
         /// <param name="name"><inheritdoc cref="GetPool{T}(string)"/></param>
         /// <returns>Pool's object (or <see langword="null"/> if free object was not finded).</returns>
         public T GetFromPool<T>(string name) where T : Component => GetPool<T>(name).Get();
+        #endregion
+
+        #region Take to pool
+        /// <summary>
+        /// Returns object back to pool and marks it as free.
+        /// </summary>
+        /// <param name="index"><inheritdoc cref="GetPool{T}"/></param>
+        /// <param name="component">Object (its component) which returns back.</param>
+        public void TakeToPool(int index, Component component) => _poolsObjects[index].Take(component);
+
+        /// <summary>
+        /// Returns object back to pool and marks it as free.
+        /// </summary>
+        /// <typeparam name="T">Pool type.</typeparam>
+        /// <param name="component">Object (its component) which returns back.</param>
+        public void TakeToPool<T>(Component component) where T : Component => GetPool<T>().Take(component);
 
         /// <summary>
         /// Returns object back to pool and marks it as free.
@@ -143,5 +149,22 @@ namespace Redcode.Pools
         /// <param name="name"><inheritdoc cref="GetPool{T}(string)"/></param>
         /// <param name="component">Object (its component) which returns back.</param>
         public void TakeToPool<T>(string name, Component component) where T : Component => GetPool<T>(name).Take(component);
+        #endregion
+    }
+
+    [InitializeOnLoad]
+    internal class PoolManagerInitializer
+    {
+        static PoolManagerInitializer()
+        {
+            var files = Directory.GetFiles("Assets", "PoolManager.cs", SearchOption.AllDirectories);
+            var poolManagerFile = files.FirstOrDefault(file => file.Replace('\\', '/').EndsWith("Redcode/Pools/Scripts/PoolManager.cs"));
+
+            var script = ((MonoImporter)AssetImporter.GetAtPath(poolManagerFile)).GetScript();
+            var order = MonoImporter.GetExecutionOrder(script);
+
+            if (order != -1)
+                MonoImporter.SetExecutionOrder(script, -1);
+        }
     }
 }
