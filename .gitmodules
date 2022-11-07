@@ -1,0 +1,3 @@
+[submodule "Assets/Modules/Submodules/Pools"]
+	path = Assets/Modules/Submodules/Pools
+	url = git@github.com:KurbanismailovZaur/Pools.git
